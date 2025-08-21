@@ -2,43 +2,23 @@ import java.util.Stack;
 
 class Solution {
     public int[] solution(int[] prices) {
-        int[] answer = new int[prices.length];
-       
-        for(int i=0; i<prices.length-1; i++){
-            int size=0;
-            for(int j=i+1; j<prices.length; j++){
-                if(prices[i]<=prices[j]){
-                    size++;
-                }
-                else{
-                    size++;
-                    break;
-                }
-            }
-            answer[i]=size;
-        }
-        answer[prices.length-1]=0;
-        return answer;
-    }
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        int[] prices = {4,5,2,1};
-        int[] result = sol.solution(prices);
+        Stack<Integer> beginIdxs = new Stack<>();
+        int i=0;
+        int[] terms = new int[prices.length];
 
-        System.out.print("입력 배열: ");
-        printArray(prices);
-        System.out.print("결과 배열: ");
-        printArray(result);
-    }
-
-    public static void printArray(int[] arr) {
-        System.out.print("[");
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i]);
-            if (i < arr.length - 1) {
-                System.out.print(", ");
+        beginIdxs.push(i);
+        for (i=1; i<prices.length; i++) {
+            while (!beginIdxs.empty() && prices[i] < prices[beginIdxs.peek()]) {
+                int beginIdx = beginIdxs.pop();
+                terms[beginIdx] = i - beginIdx;
             }
+            beginIdxs.push(i);
         }
-        System.out.println("]");
+        while (!beginIdxs.empty()) {
+            int beginIdx = beginIdxs.pop();
+            terms[beginIdx] = i - beginIdx - 1;
+        }
+
+        return terms;
     }
 }
