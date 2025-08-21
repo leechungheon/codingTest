@@ -3,23 +3,26 @@ import java.util.Stack;
 class Solution {
     public int[] solution(int[] prices) {
         int[] answer = new int[prices.length];
-
-        for (int i = 0; i < prices.length; i++) {
-            int count = 0;
-            for (int j = i + 1; j < prices.length; j++) {
-                count++;
-                if (prices[i] > prices[j]) {
+       
+        for(int i=0; i<prices.length-1; i++){
+            int size=0;
+            for(int j=i+1; j<prices.length; j++){
+                if(prices[i]<=prices[j]){
+                    size++;
+                }
+                else{
+                    size++;
                     break;
                 }
             }
-            answer[i] = count;
+            answer[i]=size;
         }
+        answer[prices.length-1]=0;
         return answer;
     }
-
     public static void main(String[] args) {
         Solution sol = new Solution();
-        int[] prices = {1, 2, 3, 4, 3, 4, 5, 6};
+        int[] prices = {4,5,2,1};
         int[] result = sol.solution(prices);
 
         System.out.print("입력 배열: ");
