@@ -1,33 +1,22 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 class Solution {
-    public boolean solution(String[] phoneBook) {
+    public boolean solution(String[] phone_book) {
         boolean answer = true;
-
-        Map<String, Integer> map = new HashMap<>();
-
-        for(int i = 0; i < phoneBook.length; i++) {
-            map.put(phoneBook[i], i);
+        Map<String, Integer> map=new HashMap<>();
+        Arrays.sort(phone_book);
+        for(int i=0; i<phone_book.length; i++){
+            map.put(phone_book[i],i);
         }
-
-        for(int i = 0; i < phoneBook.length; i++) {
-            for(int j = 0; j < phoneBook[i].length(); j++) {
-                if(map.containsKey(phoneBook[i].substring(0,j))) {
-                    answer = false;
-                    return answer;
-                }
+        for(int i=0; i<phone_book.length; i++){
+            for(int j=1; j<phone_book[i].length(); j++){
+                if(map.containsKey(phone_book[i].substring(0,j))){
+                    answer=false;
+                };
+                if(!answer)break;
             }
+            if(!answer)break;
         }
         return answer;
     }
-            public static void main(String[] args) {
-            Solution solution = new Solution();
-
-            // 테스트 케이스
-            String[] phone_book = {"119", "97674223", "1195524421"};
-
-            // 결과 출력
-            boolean result = solution.solution(phone_book);
-            System.out.println("결과: " + result); // 예상 출력: false
-        }
 }
