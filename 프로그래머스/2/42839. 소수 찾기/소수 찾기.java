@@ -1,34 +1,57 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 class Solution {
+    static int answer = 0;
+    static Set<Integer> set = new HashSet<>();
     public int solution(String numbers) {
-        HashSet<Integer> set = new HashSet<>();
-        permutation("", numbers, set);
-        int count = 0;
-        while(set.iterator().hasNext()){
-            int a = set.iterator().next();
-            set.remove(a);
-            if(a==2) count++;
-            if(a%2!=0 && isPrime(a)){
-                count++;
+
+        int[] number = new int[numbers.length()];
+        boolean[] used = new boolean[number.length];
+        String combineNumStr="";
+
+        //1.하나씩 쪼개기
+        for(int i=0; i<numbers.length(); i++){
+            number[i]= numbers.charAt(i)-'0';
+            System.out.println("number : "+number[i]);
+        }
+        generateCombineNumbers(combineNumStr, number, used);
+        List<Integer> list=new ArrayList<>(set);
+        for(int i=0; i<list.size(); i++){
+            isPrime(list.get(i));
+        }
+
+        return answer;
+    }
+    public static void generateCombineNumbers(String combineNumStr,int[] number, boolean[] used){
+        if(!combineNumStr.isEmpty()){
+            set.add(Integer.parseInt(combineNumStr));
+        }
+        if(combineNumStr.length()==number.length){
+            return;
+        }
+        for(int i=0; i<number.length; i++){
+            if(used[i]){
+                continue;
             }
+            used[i] = true;
+            generateCombineNumbers(combineNumStr + number[i],number,used);
+            used[i] = false; // 백트래킹
         }
-        return count;
     }
-
-    public boolean isPrime(int n){
-        if(n==0 || n==1) return false;
-        for(int i=3; i<=(int)Math.sqrt(n); i+=2){
-            if(n%i==0) return false;
+    public static void isPrime(int a){
+        if(a==1)return;
+        if(a==2){
+            answer++;
+            return;
         }
-        return true;
+        if(a%2==0)return;
+        for(int i=3; i<a; i+=2){
+            if(a%i==0)return;
+        }
+        System.out.println(a);
+        answer++;
     }
-
-    public void permutation(String prefix, String str, HashSet<Integer> set) {
-        int n = str.length();
-        if(!prefix.equals("")) set.add(Integer.valueOf(prefix));
-        for (int i = 0; i < n; i++)
-            permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i+1, n), set);
-
-    }
-
 }
