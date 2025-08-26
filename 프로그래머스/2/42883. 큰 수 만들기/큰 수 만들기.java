@@ -1,22 +1,23 @@
 class Solution {
-    public String solution(String number, int k) {
-        StringBuilder sb = new StringBuilder();
-        int toRemove = k;  // 제거해야 할 숫자의 개수
-        for (int i = 0; i < number.length(); i++) {
-            // 현재 숫자보다 작은 숫자가 스택의 끝에 있으면 제거
-            while (toRemove > 0 && sb.length() > 0 && sb.charAt(sb.length() - 1) < number.charAt(i)) {
-                sb.deleteCharAt(sb.length() - 1); // 마지막 문자 제거
-                toRemove--;  // 제거할 숫자 하나 감소
+    public StringBuilder solution(String number, int k) {
+        String answer;
+        StringBuilder sb = new StringBuilder("");
+        char[] numbersChar = number.toCharArray();
+        sb.append(numbersChar[0]);
+        for(int i=1; i<numbersChar.length; i++){
+            while(sb.length()>0 && numbersChar[i]>sb.charAt(sb.length()-1) && k>0){
+                sb.deleteCharAt(sb.length()-1);
+                k--;
             }
-            sb.append(number.charAt(i));  // 현재 숫자 추가
+                sb.append(numbersChar[i]);
         }
-
-        // k개의 숫자를 제거하지 못했다면 뒤에서부터 제거
-        while (toRemove > 0) {
+        // 반복문이 끝난 후에도 k가 남았다면, 남은 k만큼 뒤에서 제거합니다.
+        // ex) number = "98765", k = 2
+        while (k > 0) {
             sb.deleteCharAt(sb.length() - 1);
-            toRemove--;
+            k--;
         }
-
-        return sb.toString();  // 최종 문자열 반환
+        answer=sb.toString();
+        return new StringBuilder(answer);
     }
 }
