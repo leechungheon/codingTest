@@ -1,22 +1,25 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 class Solution {
-    List<String> wordArray=new ArrayList<>();
-    String[] array= {"A","E","I","O","U"};
+    static List<String> list=new ArrayList<>();
     public int solution(String word) {
         int answer = 0;
-        generateWord(0,"");
-        answer=wordArray.indexOf(word);
-        answer++;
+        char[] words={'A','E','I','O','U'};
+        generateWords(words, "");
+        Collections.sort(list);
+
+        Map<String, Integer> map=new HashMap<>();
+        for(int i=0; i<list.size(); i++){
+            map.put(list.get(i),i);
+        }
+        answer=map.get(word);
         return answer;
     }
-
-    public void generateWord(int length, String wd){
-        if(length>5)return;
-        if(!wd.isEmpty())wordArray.add(wd);
-        for(int i=0; i<5; i++){
-            generateWord(length+1, wd+array[i]);
+    public void generateWords(char[] words, String currentWord){
+        if(currentWord.length()>words.length)return;
+        list.add(currentWord);
+        for(int i=0; i<words.length; i++){
+            generateWords(words,currentWord+words[i]);
         }
     }
 }
