@@ -10,9 +10,6 @@ class Solution {
         for(int i=0; i< operations.length; i++){
             operationsArr[i]=operations[i].charAt(0); //insert와 delete 저장
             numbersArr[i]=Integer.parseInt(operations[i].substring(2)); //숫자 저장
-        }
-        //2. 삽입/삭제 연산
-        for(int i=0; i<operationsArr.length; i++){
 
             if(operationsArr[i]=='I'){
                 list.add(numbersArr[i]);
@@ -26,7 +23,7 @@ class Solution {
             }
         }
 
-        // 리스트가 비어있을 경우 0으로 처리
+        //3. 리스트가 비어있을 경우 0으로 처리
         if (list.isEmpty()) {
             answer[0] = 0;
             answer[1] = 0;
@@ -36,9 +33,5 @@ class Solution {
         }
 
         return answer;
-    }
-
-    public static void main(String[] args) {
-
     }
 }
