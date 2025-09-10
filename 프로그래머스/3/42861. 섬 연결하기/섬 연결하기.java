@@ -1,50 +1,54 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 class Solution {
+    static int answer=0;
+    class Node implements Comparable<Node> {
+        int to;
+        int cost;
+
+        Node(int to, int cost) {
+            this.to = to;
+            this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return this.cost - o.cost;
+        }
+    }
     public int solution(int n, int[][] costs) {
-        Arrays.sort(costs, (a, b) -> Integer.compare(a[2], b[2]));
-
-        int[] parent = new int[n];
+        boolean[] visited = new boolean[n+1];
+        ArrayList<ArrayList<Node>> graph = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            parent[i] = i;
+            graph.add(new ArrayList<>());
         }
-
-        int totalCost = 0;
-        int edgesCount = 0;
-
-        for (int[] edge : costs) {
-            int start = edge[0];
-            int end = edge[1];
-            int cost = edge[2];
-
-            if (findParent(parent, start) != findParent(parent, end)) {
-                unionParent(parent, start, end);
-                totalCost += cost;
-                edgesCount++;
-            }
-            
-            if (edgesCount == n - 1) {
-                break;
-            }
+        // 인접리스트 생성
+        for (int[] cost : costs) {
+            graph.get(cost[0]).add(new Node(cost[1], cost[2]));
+            graph.get(cost[1]).add(new Node(cost[0], cost[2]));
         }
-
-        return totalCost;
+        dijkstra(0, graph, visited, n);
+        return answer;
     }
 
-    private int findParent(int[] parent, int x) {
-        if (parent[x] != x) {
-            parent[x] = findParent(parent, parent[x]);
-        }
-        return parent[x];
-    }
-
-    private void unionParent(int[] parent, int a, int b) {
-        a = findParent(parent, a);
-        b = findParent(parent, b);
-        if (a < b) {
-            parent[b] = a;
-        } else {
-            parent[a] = b;
+    public void dijkstra(int start, ArrayList<ArrayList<Node>> graph, boolean[] visited, int n) {
+        int checkedNode=0;
+        Queue<Node> q1=new PriorityQueue<>();
+        q1.add(new Node(start,0));
+        while(!q1.isEmpty()){
+            Node node=q1.poll();
+            if(visited[node.to]) continue;
+            visited[node.to]=true;
+            checkedNode++;
+            answer+=node.cost;
+            for(Node next:graph.get(node.to)){
+                if(!visited[next.to]){
+                    q1.add(next);
+                }
+            }
+            if(checkedNode==n) break;
         }
     }
 }
