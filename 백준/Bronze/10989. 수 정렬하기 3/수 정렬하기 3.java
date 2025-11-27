@@ -8,7 +8,7 @@ class Main
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		int N = Integer.parseInt(br.readLine());
-		int[] numbers = new int[10000001];
+		int[] numbers = new int[10001];
 		for(int i=0; i<N; i++) {
 			int input = Integer.parseInt(br.readLine());
 			numbers[input]++;
